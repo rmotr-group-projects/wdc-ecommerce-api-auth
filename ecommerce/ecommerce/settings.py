@@ -129,13 +129,11 @@ STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
-        'api.authentication.APIClientAuthentication',
+        ### YOUR CODE HERE
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+        ### YOUR CODE HERE
     ),
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 3
+    'DEFAULT_PAGINATION_CLASS': 'YOUR CODE HERE',
+    'PAGE_SIZE': 'YOUR CODE HERE'
 }

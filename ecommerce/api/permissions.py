@@ -6,21 +6,21 @@ class IsNotHacker(permissions.BasePermission):
 
     # view level permission
     def has_permission(self, request, view):
-        if isinstance(request.user, APIClient):
-            name = request.user.name
-        else:
-            name = request.user.username
+        # check if the user name contains the word "hacker". If so, return Flase.
+        # Otherwise, return True.
 
-        if 'hacker' in name.lower():
-            return False
-        return True
+        # The name that you need to evaluate is taken from `request.user.username`
+        # in case it is a regular User, or from `request.user.name` in case it
+        # is an APIClient.
+
+        return False
 
 
 class IsOddProductID(permissions.BasePermission):
 
     # object level permission
     def has_object_permission(self, request, view, obj):
-        product = obj
-        if product.id % 2 == 1:
-            return True
+        # check if the product id is and odd integer. If so, returns True.
+        # Otherwise return False.
+
         return False
