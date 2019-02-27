@@ -129,11 +129,23 @@ STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        ### YOUR CODE HERE
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'api.authentication.APIClientAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        ### YOUR CODE HERE
+        'rest_framework.permissions.IsAuthenticated',
     ),
-    'DEFAULT_PAGINATION_CLASS': 'YOUR CODE HERE',
-    'PAGE_SIZE': 'YOUR CODE HERE'
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 3
 }
+
+# had to import class from authentication.py
+
+    #   (see `IsAuthenticated` permission from DRF)
+    #   (see `IsAdminUser` permission from DRF).
+    
+    # https://www.django-rest-framework.org/api-guide/permissions/
+    
+    # Failed a test trying to do this:
+    # Don't use 'rest_framework.permissions.IsAdminUser' ????  Is that not a thing?
