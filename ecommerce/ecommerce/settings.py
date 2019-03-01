@@ -127,13 +127,16 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        ### YOUR CODE HERE
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'api.authentication.APIClientAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        ### YOUR CODE HERE
+        'rest_framework.permissions.IsAuthenticated',   # EVERY VIEW MUST BE AUTHENTICATED!!!
     ),
-    'DEFAULT_PAGINATION_CLASS': 'YOUR CODE HERE',
-    'PAGE_SIZE': 'YOUR CODE HERE'
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 3      # only 3 pages for tests to work properly
 }

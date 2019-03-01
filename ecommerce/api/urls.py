@@ -1,13 +1,9 @@
-from django.contrib import admin
-from django.urls import path, include
-
 from rest_framework.routers import DefaultRouter
-
 from api import views
 
 
 router = DefaultRouter()
-router.register('products', views.ProductViewSet, base_name='products')
+router.register('products', views.ProductViewSet, base_name='products')  # products/    and     products/1 , etc
 
-urlpatterns = []
-urlpatterns += router.urls
+urlpatterns = [url for url in router.urls]
+# OR do -->  # urlpatterns += router.urls

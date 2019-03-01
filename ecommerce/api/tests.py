@@ -50,7 +50,7 @@ class ProductTestCase(TestCase):
     def test_list_basic_auth(self):
         """Should return list of products when user is authenticated with Basic auth"""
         headers = {
-            'HTTP_AUTHORIZATION': 'Basic ' + base64.b64encode(b'test:test').decode("ascii")
+            'HTTP_AUTHORIZATION': 'Basic ' + base64.b64encode(b'test:test').decode("ascii")  # username:password    for user=test, password=test    from setUp() above
         }
         expected = {
             'count': 2,
