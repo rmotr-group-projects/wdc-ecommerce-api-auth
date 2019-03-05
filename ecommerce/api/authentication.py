@@ -1,29 +1,28 @@
 from django.core.exceptions import ValidationError
 from rest_framework import exceptions, permissions, authentication
-
 from api.models import APIClient
 
 
 def validate_authkey(value):
     """Raises a ValidationError if value has not length 32"""
-    if not len(value) == 32:
+    if len(value) != 32:
         raise ValidationError(
-            'Value must be a string containing 32 alphanumeric characters')
+            'Your value must be a string of 32 letters and numbers')
 
 
 class APIClientAuthentication(authentication.BaseAuthentication):
 
-    def authenticate(self, request):
+    def authenticate(self, request):    # overriding this method from default
         # Get the accesskey from the query parameters, and the secretkey from
         # the request headers.
-        accesskey = '...'
-        secretkey = '...'
+        accesskey = request.query_params.get('accesskey')   # from DRF... Is also request.GET, but is more specific
+        secretkey = request.META.get('secretkey')   # HTTP headers
 
         # Validate that AK and SK were given
         if not accesskey or not secretkey:
             return None
 
-        # Validate that AK and SK are valids
+        # validate that AK and SK are valids
         for key in [accesskey, secretkey]:
             try:
                 validate_authkey(key)
@@ -37,3 +36,15 @@ class APIClientAuthentication(authentication.BaseAuthentication):
         # If APIClient doesn't exist or is inactive, raise an AuthenticationFailed
 
         ### YOUR CODE HERE
+
+
+
+        # validate that APIClient exists for given AK and SK
+        try:
+            api_client = APIClient.objects.get(accesskey=accesskey, secretkey=secretkey)
+            if api_client.is_active:
+                return (api_client, None)
+            else:
+                raise api_client.DoesNotExist
+        except APIClient.DoesNotExist:
+            raise exceptions.AuthenticationFailed('Invalid APIClient credentials')
