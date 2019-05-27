@@ -25,7 +25,7 @@ SECRET_KEY = '9pl)^ghwqec9w2#6*49=1o*3jxtj6)sib)=)@ehch6v53()eoo'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -127,13 +127,15 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         ### YOUR CODE HERE
-#     ),
-#     'DEFAULT_PERMISSION_CLASSES': (
-#         ### YOUR CODE HERE
-#     ),
-#     'DEFAULT_PAGINATION_CLASS': 'YOUR CODE HERE',
-#     'PAGE_SIZE': 'YOUR CODE HERE'
-# }
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'api.authentication.APIClientAuthentication'
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+       'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 3
+}
