@@ -13,7 +13,12 @@ class IsNotHacker(permissions.BasePermission):
         # in case it is a regular User, or from `request.user.name` in case it
         # is an APIClient.
 
-        return False
+        if isinstance(request.user, APIClient):
+            name = request.user.name
+        else:
+            name = request.user.username
+
+        return not 'hacker' in name.lower()
 
 
 class IsOddProductID(permissions.BasePermission):
@@ -22,5 +27,4 @@ class IsOddProductID(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         # check if the product id is and odd integer. If so, returns True.
         # Otherwise return False.
-
-        return False
+        return obj.id % 2 == 1

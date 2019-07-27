@@ -23,3 +23,11 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     # - The retrieve endpoint will need the user to pass the `IsOddProductID`
     #   permission (must also be implemented inside `api/permissions.py`)
+
+    def get_permissions(self):
+        permissions = [IsAuthenticated(), IsNotHacker()]
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            permissions += [IsAdminUser()]
+        elif self.action == 'retrieve':
+            permissions += [IsOddProductID()]
+        return permissions
