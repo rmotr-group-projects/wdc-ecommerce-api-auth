@@ -229,7 +229,8 @@ class ProductTestCase(TestCase):
 
     @freeze_time('2018-12-20T10:15:30+00:00')
     def test_list(self):
-        """Should return the list of all products paginated in pages of 3 products"""
+        """Should return the list of all products 
+        inated in pages of 3 products"""
         product_3 = Product.objects.create(
             name='Third product',
             sku='99999999',

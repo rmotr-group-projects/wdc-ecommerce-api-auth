@@ -7,19 +7,19 @@ from api.permissions import IsOddProductID, IsNotHacker
 
 
 class ProductViewSet(viewsets.ModelViewSet):
+    #ModelVieweSet just need serializer and queryset
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
 
-    # Define here the permissions for each endpoints according to the
-    # following conditions:
-
-    # - All endpoints will require the user to be authenticated
-    #   (see `IsAuthenticated` permission from DRF) and not being a hacker
-    #   (see `IsNotHacker` permission inside `api/permissions.py`)
-
-    # - All endpoints that modify the database will require the user to be admin
-    #   (see `IsAdminUser` permission from DRF).
-    #   This endpoints are the create, update, partial update and delete.
-
-    # - The retrieve endpoint will need the user to pass the `IsOddProductID`
-    #   permission (must also be implemented inside `api/permissions.py`)
+    #Limit actions on view set based on permissions
+    def get_permissions(self):
+        #Checks if user is not 'hacker'
+        permissions = [IsAuthenticated(), IsNotHacker()]
+        #To perform create,update,partial_update,destroy user needs to be AdminUser
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            permissions += [IsAdminUser()]
+        #If you want to retrieve specific objects needs to Pass IsOddProductID    
+        elif self.action == 'retrieve':
+            permissions += [IsOddProductID()]
+        return permissions
+        
