@@ -14,21 +14,25 @@ def validate_authkey(value):
 class APIClientAuthentication(authentication.BaseAuthentication):
     
     def authenticate(self, request):
+        """
+        When posting the META will retertive all headers
+        POSTMAN/INSOMINA POST will make header secret key == HTTP_SECRETKEY
+        """
         accesskey = request.query_params.get('accesskey')
         secretkey = request.META.get('secretkey')
         
-        
+        #Double check for secret key
         if not secretkey:
             secretkey = request.META.get('HTTP_SECRETKEY')
-        # validate that AK and SK were given
         
-        import pdb; pdb.set_trace()
+        #Check for accesskey and seccretkey
         if not accesskey or not secretkey:
             return None
 
         # validate that AK and SK are valids
         for key in [accesskey, secretkey]:
             try:
+                #Check if both keys get validated with helper function
                 validate_authkey(key)
             except ValidationError:
                 raise exceptions.AuthenticationFailed('Invalid APIClient credentials')

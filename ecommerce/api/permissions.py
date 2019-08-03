@@ -3,7 +3,7 @@ from api.models import APIClient
 
 
 class IsNotHacker(permissions.BasePermission):
-
+    
     # view level permission
     def has_permission(self, request, view):
         if isinstance(request.user, APIClient):
