@@ -16,8 +16,8 @@ class APIClientAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
         # Get the accesskey from the query parameters, and the secretkey from
         # the request headers.
-        accesskey = '...'
-        secretkey = '...'
+        accesskey = request.query_params.get('accesskey')
+        secretkey = request.META.get('secretkey')
 
         # Validate that AK and SK were given
         if not accesskey or not secretkey:
@@ -37,3 +37,15 @@ class APIClientAuthentication(authentication.BaseAuthentication):
         # If APIClient doesn't exist or is inactive, raise an AuthenticationFailed
 
         ### YOUR CODE HERE
+
+        try:
+            api_client = APIClient.objects.get(accesskey=accesskey, secretkey=secretkey)
+            if api_client.is_active:
+                return (api_client, None)
+            else:
+                raise api_client.DoesNotExist
+        except APIClient.DoesNotExist:
+            raise exceptions.AuthenticationFailed('Invalid APIClient credentials')
+            
+
+

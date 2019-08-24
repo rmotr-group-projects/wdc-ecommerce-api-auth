@@ -10,6 +10,14 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
 
+    def get_permissions(self):
+        permissions = [IsAuthenticated(), IsNotHacker()]
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            permissions += [IsAdminUser()]
+        elif self.action == 'retrieve':
+            permissions += [IsOddProductID()]
+        return permissions
+
     # Define here the permissions for each endpoints according to the
     # following conditions:
 
